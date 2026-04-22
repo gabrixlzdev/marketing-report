@@ -1,11 +1,12 @@
 import json
 import time
+from typing import Optional
 
-def save_config(config):
+def save_config(config) -> None:
     with open("config.json","w") as f:
         json.dump(config,f) #converte um dicionário Python para texto no formato JSON e escreve no arquivo.
     
-def load_config():
+def load_config() -> Optional[dict]:
     try:
         with open("config.json","r") as f:
             config = json.load(f) # lê o texto JSON do arquivo e converte de volta para um dicionário Python.
@@ -13,7 +14,7 @@ def load_config():
     except FileNotFoundError:
         return None
     
-def  select_column(column_campaings):
+def  select_column(column_campaings) -> str:
     for i,column in enumerate(column_campaings):
         print(f"{i+1}. {column}")
 
@@ -33,7 +34,7 @@ def  select_column(column_campaings):
 
     return column_campaings[column_selected]
     
-def setup_config(config, column_campaings):
+def setup_config(config, column_campaings) -> dict:
     
     while True:
     
