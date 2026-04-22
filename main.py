@@ -5,13 +5,16 @@ import os
 
 from loader import load_campaings
 from metrics import filter_campaings
+from config import setup_config, load_config
+
 
 #we will work with df = data frames.
 #| a   | b | c |
-#|---------------------------|-------------|---------|
+#|-----|---|---|
 #| x   | 6 | 52|
 #| y   | 2 | 17|
 #| z   | 12| 4 |
+
 def main():
 
     print("Welcome to the Marketing Report Generator!")

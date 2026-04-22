@@ -33,7 +33,7 @@ def  select_column(column_campaings):
 
     return column_campaings[column_selected]
     
-def setup_config(config, column_campaings, selected_campaings):
+def setup_config(config, column_campaings):
     
     while True:
     
