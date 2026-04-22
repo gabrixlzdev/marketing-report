@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 import os
 
+
 from loader import load_campaings
 from metrics import filter_campaings
 
