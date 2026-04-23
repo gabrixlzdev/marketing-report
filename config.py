@@ -11,17 +11,13 @@ def load_config() -> Optional[dict]:
         with open("config.json","r") as f:
             config = json.load(f) # lê o texto JSON do arquivo e converte de volta para um dicionário Python.
             return config
-        
-    except FileNotFoundError:
-        return None
     
     except (FileNotFoundError, json.JSONDecodeError):
         print("Error loading configuration. The file is either missing or corrupted.")
         return None
         
 def  select_column(column_campaings) -> str:
-    for i,column in enumerate(column_campaings):
-        print(f"{i+1}. {column}")
+
 
     while True: 
         try:    
@@ -48,6 +44,9 @@ def setup_config(config, column_campaings) -> dict:
             print("No configuration found. Setting up a new configuration...")
             time.sleep(2)
 
+            for i,column in enumerate(column_campaings):
+                print(f"{i+1}. {column}")
+
             print("For the spend column data:")
             spend_column = select_column(column_campaings)
 
@@ -65,7 +64,7 @@ def setup_config(config, column_campaings) -> dict:
 
             print("For the cost per lead column data:")
             cost_per_lead_column = select_column(column_campaings)
-
+            
             print("For the new contacts column data:")
             new_contacts_column = select_column(column_campaings)
 
