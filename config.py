@@ -11,9 +11,14 @@ def load_config() -> Optional[dict]:
         with open("config.json","r") as f:
             config = json.load(f) # lê o texto JSON do arquivo e converte de volta para um dicionário Python.
             return config
+        
     except FileNotFoundError:
         return None
     
+    except (FileNotFoundError, json.JSONDecodeError):
+        print("Error loading configuration. The file is either missing or corrupted.")
+        return None
+        
 def  select_column(column_campaings) -> str:
     for i,column in enumerate(column_campaings):
         print(f"{i+1}. {column}")

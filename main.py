@@ -41,6 +41,10 @@ def main():
 
     df, column_campaings, selected_campaings = load_campaings(CSV_FILE) #function to read the csv file and generate the report
 
+    columns = df.columns.tolist() #get the columns of the data frame as a list
+    config = load_config() #function to load the configuration from a file
+    config = setup_config(config, columns) #function to set up the configuration
+
     df_filtered = filter_campaings(df, column_campaings, selected_campaings) #function to filter the data based on the selected campaigns
     
     

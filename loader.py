@@ -6,15 +6,15 @@ def load_campaings(CSV_FILE):
 
     df = pd.read_csv(CSV_FILE)
     
-    collumns = df.columns.tolist()
+    columns = df.columns.tolist()
     print("Plese select the column that contains the campaign names:")
     
-    for i, column in enumerate(collumns): #enumerate the collumns to print them with a number
+    for i, column in enumerate(columns): #enumerate the collumns to print them with a number
         print (f"{i+1}. {column}")
 
     column_campaings = int(input("Enter the number of the column that contains the campaign names: ")) - 1 #get the user input and convert it to an integer, subtract 1 to get the correct index
     
-    campaings = df[collumns[column_campaings]].unique().tolist()
+    campaings = df[columns[column_campaings]].unique().tolist()
 
     print("Available campaigns:")
 
@@ -40,4 +40,4 @@ def load_campaings(CSV_FILE):
 
         break
 
-    return df, column_campaings,selected_campaings
+    return df, columns[column_campaings],selected_campaings
