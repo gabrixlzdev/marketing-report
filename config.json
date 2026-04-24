@@ -1,1 +1,9 @@
-{"spend": "Valor usado (BRL)", "impressions": "Impress\u00f5es", "reach": "Alcance", "clicks": "Cliques (todos)", "conversions": "Compras", "cost_per_lead": "Custo por conversa por mensagem iniciada", "new_contacts": "Novos contatos de mensagem"}
+{
+    "spend": "Valor usado (BRL)", 
+    "impressions": "Impress\u00f5es", 
+    "reach": "Alcance", 
+    "clicks": "Cliques (todos)", 
+    "conversions": "Conversas por mensagem iniciadas", 
+    "cost_per_lead": "Custo por conversa por mensagem iniciada", 
+    "new_contacts": "Custo por novo contato por mensagem"
+}

@@ -4,7 +4,7 @@ from typing import Optional
 
 def save_config(config) -> None:
     with open("config.json","w") as f:
-        json.dump(config,f) #converte um dicionário Python para texto no formato JSON e escreve no arquivo.
+        json.dump(config,f, indent=2) #converte um dicionário Python para texto no formato JSON e escreve no arquivo.
     
 def load_config() -> Optional[dict]:
     try:
