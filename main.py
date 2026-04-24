@@ -4,7 +4,7 @@ import os
 
 
 from loader import load_campaings
-from metrics import filter_campaings
+from metrics import filter_campaings, calculate_summary
 from config import setup_config, load_config
 
 
@@ -47,7 +47,9 @@ def main():
 
     df_filtered = filter_campaings(df, column_campaings, selected_campaings) #function to filter the data based on the selected campaigns
     
-    
+    summary = calculate_summary(df_filtered,config) #function to calculate the summary of the data
+
+    print(summary) #print the summary of the data
 
 if __name__ == "__main__":
     main()
