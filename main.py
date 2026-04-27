@@ -50,7 +50,7 @@ def main():
     
     summary = calculate_summary(df_filtered,config) #function to calculate the summary of the data
 
-    generate_report(summary, df_filtered) #function to generate the report
+    generate_report(summary, df_filtered,column_campaings,selected_campaings) #function to generate the report
 
 if __name__ == "__main__":
     main()
