@@ -6,6 +6,7 @@ import os
 from loader import load_campaings
 from metrics import filter_campaings, calculate_summary
 from config import setup_config, load_config
+from reporter import generate_report
 
 
 #we will work with df = data frames.
@@ -49,7 +50,7 @@ def main():
     
     summary = calculate_summary(df_filtered,config) #function to calculate the summary of the data
 
-    print(summary) #print the summary of the data
+    generate_report(summary, df_filtered) #function to generate the report
 
 if __name__ == "__main__":
     main()
