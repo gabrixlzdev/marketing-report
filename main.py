@@ -31,15 +31,18 @@ def main():
             continue
 
         else:
-            confirm = input(f"Is {os.path.basename(CSV_FILE)} the correct file? (y/n): ")
+            while True: 
+                confirm = input(f"Is {os.path.basename(CSV_FILE)} the correct file? (y/n): ")
 
-            if confirm.lower() == 'y':
-                break
-            elif confirm.lower() == 'n':
-                continue
-            else:
-                print("Invalid input. Please enter y or n.")
-
+                if confirm.lower() == 'y':
+                    break
+                elif confirm.lower() == 'n':
+                    continue
+                else:
+                    print("Invalid input. Please enter y or n.")
+                    continue
+            break
+    
     df, column_campaings, selected_campaings = load_campaings(CSV_FILE) #function to read the csv file and generate the report
 
     columns = df.columns.tolist() #get the columns of the data frame as a list
@@ -50,7 +53,7 @@ def main():
     
     summary = calculate_summary(df_filtered,config) #function to calculate the summary of the data
 
-    generate_report(summary, df_filtered,column_campaings,selected_campaings) #function to generate the report
+    generate_report(summary, df_filtered,column_campaings,selected_campaings, config) #function to generate the report
 
 if __name__ == "__main__":
     main()

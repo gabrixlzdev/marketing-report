@@ -2,8 +2,10 @@ from openpyxl import Workbook
 from tkinter import filedialog
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
+from openpyxl.chart import BarChart, PieChart, Reference
+from openpyxl.chart.series import DataPoint
 
-def generate_report(summary: dict, df_filtered: dict, column_campaings: list, selected_campaings: list) -> None:
+def generate_report(summary: dict, df_filtered: dict, column_campaings: list, selected_campaings: list, config: dict) -> None:
     # This function will generate the report based on the summary of the data
     # You can implement the logic to create a new sheet in the workbook and write the summary of the data to it as needed
 
@@ -88,7 +90,7 @@ def generate_report(summary: dict, df_filtered: dict, column_campaings: list, se
         ws_campaign.merge_cells(f"A1:{last_column_campaign}1") # merge the cells in the first row of the sheet to create a title for the campaign data
 
     
-        ws_campaign["A1"].value = "Summary of the data" # set the value of the merged cells to "Summary of the data"
+        ws_campaign["A1"].value = campaign # set the value of the merged cells to the campaign name
         ws_campaign["A1"].font = Font(name=font ,size=14, bold=True, color = "FFFFFF") # set the font of the title to size 14 and bold
         ws_campaign["A1"].alignment = Alignment(horizontal="center", vertical="center") # set the alignment of the title to center
         ws_campaign["A1"].fill = PatternFill("solid", start_color = "1F4E79") # set the background color of the title to a dark blue
@@ -117,7 +119,59 @@ def generate_report(summary: dict, df_filtered: dict, column_campaings: list, se
             ws_campaign.cell (row=3, column=i+1).number_format = "#,##0.00" if isinstance(values[i], float) else "#,##0" # set the number format of the cell to have two decimal places if the value is a float, or no decimal places if the value is an integer
 
             i+=1
+    
+    headers= ["Campaign Name","Spend", "conversions", "CPL"] # create a list of headers for the campaign data
+    for i in range(len(headers)): #range(len(headers)) -> range(4) -> [0, 1, 2, 3]
+        ws.cell(row=6, column=i+1).value = headers[i] # write the headers to the fourth row of the sheet
+        ws.cell(row=6, column=i+1).font = Font(name=font ,size=14, bold=True, color = "FFFFFF") # set the font of the title to size 14 and bold
+        ws.cell(row=6, column=i+1).fill = PatternFill("solid", start_color = "1F4E79") # set the background color of the title to a dark blue
+        ws.cell(row=6, column=i+1).alignment = Alignment(horizontal="center")
+        ws.cell(row=6, column=i+1).border = border
 
+    i=0
+    while i< len(selected_campaings):
+
+        campaign = selected_campaings[i] # get the current campaign name from the list of selected campaigns
+        df_campaign = df_filtered[df_filtered[column_campaings] == campaign] # filter the data frame to get the data for the current campaign
+        
+        ws.cell(row=i+7, column=1).value = campaign # write the campaign name to the first column of the sheet
+        ws.cell(row=i+7, column=2).value = df_campaign[config["spend"]].values[0] # write the total spend for the current campaign to the second column of the sheet
+        ws.cell(row=i+7, column=3).value = df_campaign[config["conversions"]].values[0] # write the total conversions for the current campaign to the third column of the sheet
+        ws.cell(row=i+7, column=4).value = df_campaign[config["cost_per_lead"]].values[0] # write the cost per lead for the current campaign to the fourth column of the sheet
+
+        j=1
+        while j<=4:
+            ws.cell(row=i+7, column=j).font = Font(name=font) # set the font of the cells to the specified font
+            ws.cell(row=i+7, column=j).fill = PatternFill("solid", start_color="D6E4F0")
+            ws.cell(row=i+7, column=j).alignment = Alignment(horizontal="center")
+            ws.cell(row=i+7, column=j).border = border
+
+            
+            j+=1
+
+        i+=1
+
+    #graphics to visualize the data for each campaign
+    last_row = len(selected_campaings) + 6 # calculate the last row of the campaign data in the sheet
+
+    data= Reference(ws, min_col=2, min_row=6, max_row=last_row) # create a reference to the campaign data in the sheet
+    x_axis= Reference(ws, min_col=1, min_row=7, max_row=last_row) # create a reference to the campaign names in the sheet
+
+    #bar chart to visualize the total spend for each campaign
+
+    chart_bar = BarChart() # create a bar chart to visualize the campaign data
+    chart_bar.add_data(data, titles_from_data=True) # add the campaign data to the chart
+    chart_bar.set_categories(x_axis) # set the x-axis of the chart to the campaign names
+    chart_bar.title = "Value spend by campaign" # set the title of the chart
+    ws.add_chart(chart_bar, "F6") # add the chart to the sheet at the specified position
+
+    #pie chart to visualize the total conversions for each campaign
+
+    chart_pie=PieChart() # create a pie chart to visualize the campaign data
+    chart_pie.add_data(data, titles_from_data=True) # add the campaign data to the chart
+    chart_pie.set_categories(x_axis) # set the x-axis of the chart to the campaign names
+    chart_pie.title = "Budget allocation by campaign" # set the title of the chart
+    ws.add_chart(chart_pie, "M20") # add the chart to the sheet at the specified position
 
     wb.save(output_path) # save the workbook to the specified path
     
